@@ -1,27 +1,41 @@
 import logo from "../logo.svg";
 import "../components/App.css";
 import { useEffect, useState } from "react";
-import CoursesList from "./CoursesList";
 
-function App() {
-  const [cursos, setCurso] = useState([]);
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-  function getArticles() {
-    fetch("/api/v1/cursos/index")
-      .then((response) => response.json())
-      .then((data) => setCurso(data));
-  }
+import Home from "../components/Home";
+import Signup from "../components/Signup";
+import Login from "../components/Login";
+import Courses from "../components/Courses";
+import Layout from "../components/Layout";
+import NotFound from "../components/NotFound";
 
-  useEffect(() => {
-    getArticles();
-  }, []);
-
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(null);
   return (
-    <div className="App">
-      <h1>Todos los cursos</h1>
-      <CoursesList cursos={cursos} />
-    </div>
+    <Router>
+      <Layout loggedIn={loggedIn} setLoggedIn={setLoggedIn}>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/cursos">
+            {loggedIn && <Courses />}
+          </Route>
+          <Route exact path="/login">
+            <Login setLoggedIn={setLoggedIn} />
+          </Route>
+          <Route exact path="/signup">
+            <Signup setLoggedIn={setLoggedIn} />
+          </Route>
+          <Route exact path="/notfound">
+            <NotFound />
+          </Route>
+        </Switch>
+      </Layout>
+    </Router>
   );
-}
+};
 
 export default App;
