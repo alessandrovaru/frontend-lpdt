@@ -51,6 +51,7 @@ const Courses = () => {
           No estás conectado a tu cuenta. <Link to="/login">Inicia sesion</Link>
         </p>
       )}
+      {loading && <p>Cargando</p>}
     </div>
   );
 };

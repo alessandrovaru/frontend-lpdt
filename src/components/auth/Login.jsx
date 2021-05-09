@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 
-const Signup = ({ setLoggedIn }) => {
+const Login = ({ setLoggedIn }) => {
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
 
@@ -30,10 +30,10 @@ const Signup = ({ setLoggedIn }) => {
       }),
     };
     console.log(form);
-    fetch("http://localhost:3000/signup", requestOptions)
+    fetch("http://localhost:3000/login", requestOptions)
       .then((response) => {
         if (response.ok) {
-          setLoggedIn({ logged: response.headers.get("Authorization") });
+          setLoggedIn(true);
           localStorage.setItem("token", response.headers.get("Authorization"));
           return response.json();
         } else {
@@ -42,7 +42,8 @@ const Signup = ({ setLoggedIn }) => {
       })
       .then((data) => {
         console.log(data);
-        history.push("/");
+
+        history.push("/dashboard");
       })
       .catch((error) => {
         setError({ msg: error });
@@ -51,7 +52,7 @@ const Signup = ({ setLoggedIn }) => {
 
   return (
     <>
-      <h2>Es es el signup</h2>
+      <h2>Este es el login</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Name:
@@ -63,10 +64,13 @@ const Signup = ({ setLoggedIn }) => {
         </label>
         <input type="submit" value="Submit" />
       </form>
+      <p>
+        ¿No tienes cuenta? <Link to="/signup">Regístrate</Link>
+      </p>
       {error && <p>{error.msg}</p>}
       <Link to="/">Home</Link>
     </>
   );
 };
 
-export default Signup;
+export default Login;
