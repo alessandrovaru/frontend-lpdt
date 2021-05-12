@@ -14,9 +14,12 @@ const Header = ({ loggedIn, deleteSession }) => {
               <Link to="/cursos">Cursos</Link>
             </li>
           )}
-          <li>
-            <Link to="/login">Login</Link> | <Link to="/signup">Sign up</Link>
-          </li>
+          {!loggedIn && (
+            <li>
+              <Link to="/login">Login</Link> | <Link to="/signup">Sign up</Link>
+            </li>
+          )}
+
           {loggedIn && (
             <li>
               <Link to="/" onClick={deleteSession}>

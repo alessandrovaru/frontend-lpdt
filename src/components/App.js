@@ -1,24 +1,17 @@
 import "../components/App.css";
 import { useEffect, useState } from "react";
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 
-import Home from "../components/Home";
-import Signup from "../components/auth/Signup";
-import Login from "../components/auth/Login";
-import Courses from "../components/courses/Courses";
+import Home from "../pages/Home";
+import Signup from "../pages/auth/Signup";
+import Login from "../pages/auth/Login";
+import Courses from "../pages/courses/Courses";
 import Layout from "../components/Layout";
-import NotFound from "../components/NotFound";
-import Dashboard from "./dashboard/Dashboard";
+import NotFound from "../pages/NotFound";
+import Dashboard from "../pages/dashboard/Dashboard";
 
-const App = () => {
-  const token = localStorage.getItem("token");
-
+const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
   const [error, setError] = useState(null);
 
@@ -29,7 +22,7 @@ const App = () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: localStorage.getItem("token"),
       },
     };
     fetch("http://localhost:3000/logout", requestOptions)
@@ -38,41 +31,42 @@ const App = () => {
           console.log("Logged out");
           return response.json();
         } else {
+          console.log("estoy aqui");
           return response.text().then((text) => Promise.reject(text));
         }
       })
       .then((data) => {
+        console.log("estoy aqui2");
         console.log(data);
+
+        history.push("/");
         localStorage.removeItem("token");
         setLoggedIn(null);
       })
       .catch((err) => {
+        console.log("estoy aqui3");
         setError({ msg: err });
         console.log(error);
       });
   };
   useEffect(() => {
-    if (token) {
+    if (localStorage.getItem("token")) {
       setLoggedIn(true);
     }
   }, []);
   return (
-    <Router>
+    <Router history={history}>
       <Layout deleteSession={deleteSession} loggedIn={loggedIn}>
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
-          {loggedIn && (
-            <>
-              <Route exact path="/cursos">
-                <Courses />
-              </Route>
-              <Route exact path="/dashboard">
-                <Dashboard />
-              </Route>
-            </>
-          )}
+          <Route exact path="/cursos">
+            <Courses />
+          </Route>
+          <Route exact path="/dashboard">
+            <Dashboard />
+          </Route>
           <Route exact path="/login">
             <Login setLoggedIn={setLoggedIn} />
           </Route>
