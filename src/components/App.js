@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 
 import { Router, Route, Switch } from "react-router-dom";
 
-import Home from "../pages/Home";
+import Home from "../pages/home/Home";
 import Signup from "../pages/auth/Signup";
 import Login from "../pages/auth/Login";
 import Courses from "../pages/courses/Courses";
-import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Layout from "./Layout/Layout";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
@@ -56,16 +56,10 @@ const App = ({ history }) => {
   }, []);
   return (
     <Router history={history}>
-      <Layout deleteSession={deleteSession} loggedIn={loggedIn}>
-        <Switch>
+      <Switch>
+        <Layout>
           <Route exact path="/">
             <Home />
-          </Route>
-          <Route exact path="/cursos">
-            <Courses />
-          </Route>
-          <Route exact path="/dashboard">
-            <Dashboard />
           </Route>
           <Route exact path="/login">
             <Login setLoggedIn={setLoggedIn} />
@@ -73,11 +67,18 @@ const App = ({ history }) => {
           <Route exact path="/signup">
             <Signup setLoggedIn={setLoggedIn} />
           </Route>
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
-      </Layout>
+        </Layout>
+        <Route exact path="/cursos">
+          <Courses />
+        </Route>
+        <Route exact path="/dashboard">
+          <Dashboard deleteSession={deleteSession} />
+        </Route>
+
+        <Route>
+          <NotFound />
+        </Route>
+      </Switch>
     </Router>
   );
 };

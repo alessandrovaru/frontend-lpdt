@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import CoursesList from "./CoursesList";
+import Category from "../../components/Category/Category";
+import ListOfCategory from "../../components/Category/ListOfCategory";
 
 const Courses = () => {
   const [cursos, setCurso] = useState([]);
@@ -41,9 +43,11 @@ const Courses = () => {
   useEffect(() => {
     getArticles();
   }, []);
+
   return (
     <div>
       <h1>Todos los cursos</h1>
+      <ListOfCategory />
       <CoursesList cursos={cursos} />
       <Link to="/">Home</Link>
       {error && (

@@ -1,34 +1,23 @@
 import React from "react";
+import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Header = ({ loggedIn, deleteSession }) => {
+const Header = () => {
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          {loggedIn && (
-            <li>
-              <Link to="/cursos">Cursos</Link>
-            </li>
-          )}
-          {!loggedIn && (
-            <li>
-              <Link to="/login">Login</Link> | <Link to="/signup">Sign up</Link>
-            </li>
-          )}
-
-          {loggedIn && (
-            <li>
-              <Link to="/" onClick={deleteSession}>
-                Desconectarme
-              </Link>
-            </li>
-          )}
-        </ul>
-      </nav>
+      <Navbar bg="transparent" variant="dark">
+        <Nav className="mr-auto">
+          <Link className="nav-link" to="/">
+            Home
+          </Link>
+          <Link className="nav-link" to="/login">
+            Login
+          </Link>
+          <Link className="nav-link" to="/signup">
+            Sign up
+          </Link>
+        </Nav>
+      </Navbar>
     </>
   );
 };

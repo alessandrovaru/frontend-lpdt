@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
+import Footer from "../../components/Footer/Footer";
+import Header from "../../components/Header";
 
 const Signup = ({ setLoggedIn }) => {
   const [form, setForm] = useState(null);
