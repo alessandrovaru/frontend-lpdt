@@ -1,6 +1,6 @@
 import BackgroundVideo from "../BackgroundVideo/BackgroundVideo";
 import Footer from "../Footer/Footer";
-import Header from "../Header";
+import Header from "../Header/Header";
 import { Overlay } from "./styles";
 
 const Layout = ({ children }) => {
