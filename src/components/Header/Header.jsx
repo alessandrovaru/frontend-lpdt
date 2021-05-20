@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import logo from "../../img/isoblanco.png";
+import logo from "../../img/logos/isoblanco.png";
 import { AlignLogo, SpanName } from "./styles";
 
 const Header = () => {

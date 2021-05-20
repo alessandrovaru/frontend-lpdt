@@ -2,12 +2,8 @@ import React from "react";
 
 import { Section, Botones } from "./styles";
 
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import BackgroundVideo from "../../components/BackgroundVideo/BackgroundVideo";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Layout from "../../components/Layout/Layout";
 
 const Home = () => {
   return (
