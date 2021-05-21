@@ -4,7 +4,7 @@ import { keyframes } from "styled-components";
 export const Section = styled.section`
   display: flex;
   flex-direction: column;
-  text-align: left;
+  text-align: center;
   justify-content: center;
   align-items: center;
   text-decoration: none;
@@ -28,25 +28,31 @@ const divReveal = keyframes`
 export const LoginContainer = styled.div`
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
-  padding: 20px 100px 20px 100px;
+  backdrop-filter: blur(5px) !important;
+  padding: 100px 140px 100px 140px;
   animation: ${divReveal} 0.5s linear;
-  padding: 80px 250px 80px 80px;
   height: auto;
-  transition: box-shadow 0.1s, transform 0.1s;
+  transition: box-shadow 0.1s, transform 0.1s, border-radius 0.2s;
+  border-radius: 5px;
 
   :hover {
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
+    border-radius: 50%;
+    padding: 140px 180px 140px 180px;
   }
 `;
 
 export const SignUpContainer = styled.div`
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
-  padding: 20px 100px 20px 100px;
-  animation: ${divReveal} 1s linear;
-  padding: 80px 250px 80px 80px;
+  backdrop-filter: blur(5px) !important;
+  padding: 100px 140px 100px 140px;
+  animation: ${divReveal} 0.5s linear;
   height: auto;
+  transition: box-shadow 0.1s, transform 0.1s, border-radius 0.2s;
+  border-radius: 5px;
+
+  :hover {
+    border-radius: 50%;
+    padding: 140px 180px 140px 180px;
+  }
 `;

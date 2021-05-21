@@ -57,7 +57,7 @@ const App = ({ history }) => {
   return (
     <Router history={history}>
       <Switch>
-        <Layout>
+        <Layout deleteSession={deleteSession}>
           <Route exact path="/">
             <Home />
           </Route>
@@ -67,13 +67,13 @@ const App = ({ history }) => {
           <Route exact path="/signup">
             <Signup setLoggedIn={setLoggedIn} />
           </Route>
+          <Route exact path="/cursos">
+            <Courses />
+          </Route>
+          <Route exact path="/dashboard">
+            <Dashboard deleteSession={deleteSession} />
+          </Route>
         </Layout>
-        <Route exact path="/cursos">
-          <Courses />
-        </Route>
-        <Route exact path="/dashboard">
-          <Dashboard deleteSession={deleteSession} />
-        </Route>
 
         <Route>
           <NotFound />

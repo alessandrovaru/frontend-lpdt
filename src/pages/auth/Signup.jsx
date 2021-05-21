@@ -1,14 +1,31 @@
 import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
-import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
+
+import VanillaTilt from "vanilla-tilt";
 
 import { Section, SignUpContainer } from "./styles";
 
 const Signup = ({ setLoggedIn }) => {
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
+
+  if (window.innerWidth > 960) {
+    VanillaTilt.init(document.getElementById("tiltSign"), {
+      max: 8,
+      speed: 400,
+      glare: true,
+      scale: 1,
+      transition: true,
+    });
+
+    VanillaTilt.init(document.getElementById("tilt2Sign"), {
+      max: 10,
+      speed: 400,
+      scale: 1.1,
+      transition: true,
+    });
+  }
 
   const history = useHistory();
 
@@ -56,53 +73,55 @@ const Signup = ({ setLoggedIn }) => {
   return (
     <>
       <Section>
-        <SignUpContainer>
-          <h2>Es es el signup</h2>
-          <form onSubmit={handleSubmit}>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">
-                Email address
-              </label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                aria-describedby="emailHelp"
-                name="email"
-                onChange={handleInputChange}
-              />
-              <div id="emailHelp" class="form-text">
-                We'll never share your email with anyone else.
+        <SignUpContainer id="tiltSign">
+          <div id="tilt2Sign">
+            <h2>Es es el signup</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label for="exampleInputEmail1" className="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  aria-describedby="emailHelp"
+                  name="email"
+                  onChange={handleInputChange}
+                />
+                <div id="emailHelp" className="form-text">
+                  We'll never share your email with anyone else.
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                onChange={handleInputChange}
-              />
-            </div>
-            <div class="mb-3 form-check">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="exampleCheck1"
-              />
-              <label class="form-check-label" for="exampleCheck1">
-                Check me out
-              </label>
-            </div>
-            <button type="submit" class="btn btn-primary">
-              Submit
-            </button>
-          </form>
-          {error && <p>{error.msg}</p>}
-          <Link to="/">Home</Link>
+              <div className="mb-3">
+                <label for="exampleInputPassword1" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-3 form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="exampleCheck1"
+                />
+                <label className="form-check-label" for="exampleCheck1">
+                  Check me out
+                </label>
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </form>
+            {error && <p>{error.msg}</p>}
+            <Link to="/">Home</Link>
+          </div>
         </SignUpContainer>
       </Section>
     </>
