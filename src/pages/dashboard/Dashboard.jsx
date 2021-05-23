@@ -5,75 +5,87 @@ import VanillaTilt from "vanilla-tilt";
 
 import {
   DashboardContainer,
+  Ronaldo,
+  Ronaldo2,
+  Wrapper,
   Card1,
+  Card1H2,
   Card2,
   Card3,
-  Card4,
-  Card5,
-  Card1Content,
-  Card2Content,
-  Card3Content,
-  Card4Content,
-  Card5Content,
+  MainSection,
+  SideSection,
+  SideSectionFirstCard,
+  SideSectionSecondCard,
 } from "./styles";
 import { useEffect } from "react";
 
 const Dashboard = ({ deleteSession }) => {
   useEffect(() => {
     if (window.innerWidth > 960) {
-      VanillaTilt.init(document.getElementById("Card1Content"), {
+      VanillaTilt.init(document.getElementById("Card1"), {
         max: 8,
         speed: 400,
+        transition: true,
         glare: true,
-        scale: 1,
-        transition: true,
       });
-      VanillaTilt.init(document.getElementById("ronaldo"), {
-        max: 10,
+      VanillaTilt.init(document.getElementById("Card2"), {
+        max: 8,
         speed: 400,
-        scale: 1.1,
         transition: true,
+        glare: true,
+      });
+      VanillaTilt.init(document.getElementById("Card3"), {
+        max: 8,
+        speed: 400,
+        transition: true,
+        glare: true,
       });
     }
   }, []);
 
   return (
     <DashboardContainer>
-      <div className="container">
+      <MainSection className="container">
         <h2>Bienvenido al dashboard</h2>
         <p>Hola</p>
+        <Wrapper className="wrapper">
+          <Card1 id="Card1">
+            <Card1H2>NUEVO CURSO</Card1H2>
+            <Ronaldo
+              id="ronaldo"
+              src={ronaldo}
+              alt="La Pizarra del DT"
+              className=" img-fluid"
+            />
+          </Card1>
 
-        <div className="container">
-          <div className="row">
-            <Card1 className="col-sm-8">
-              <Card1Content id="Card1Content">
-                <h2>Nuevo Curso</h2>
-                <img
-                  id="ronaldo"
-                  src={ronaldo}
-                  alt="La Pizarra del DT"
-                  width="300"
-                  className="d-inline-block align-text-top"
-                />
-              </Card1Content>
-            </Card1>
-            <Card2 className="col-sm-4">
-              <Card2Content>Todos los cursos</Card2Content>
-            </Card2>
-          </div>
-          <div className="row">
-            <Card3 className="col-sm">
-              <Card3Content>Mi suscripción</Card3Content>
-            </Card3>
-            <Card4 className="col-sm">
-              <Card4Content>Todos los cursos</Card4Content>
-            </Card4>
-            <Card5 className="col-sm">
-              <Card5Content>Ajustes</Card5Content>
-            </Card5>
-          </div>
-        </div>
-      </div>
+          <Card2 id="Card2">
+            <h2>Todos los cursos</h2>
+            <Ronaldo2
+              id="ronaldo"
+              src={ronaldo}
+              alt="La Pizarra del DT"
+              className="img-fluid"
+            />
+          </Card2>
+
+          <Card3 id="Card3">
+            <h2>Tododddlos cursos</h2>
+            <Ronaldo2
+              id="ronaldo"
+              src={ronaldo}
+              alt="La Pizarra del DT"
+              className="img-fluid"
+            />
+          </Card3>
+        </Wrapper>
+      </MainSection>
+      <SideSection className="container">
+        <h2>Bienvenido al dashboard</h2>
+        <p>Hola</p>
+        <SideSectionFirstCard>1</SideSectionFirstCard>
+        <SideSectionSecondCard>1</SideSectionSecondCard>
+      </SideSection>
     </DashboardContainer>
   );
 };

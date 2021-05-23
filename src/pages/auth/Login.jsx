@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
-import { Section, LoginContainer } from "./styles";
+import {
+  Section,
+  LoginContainer,
+  LoginTiltContainer,
+  LoginForm,
+} from "./styles";
 
 import VanillaTilt from "vanilla-tilt";
 import { useEffect } from "react";
@@ -57,18 +62,8 @@ const Login = ({ setLoggedIn }) => {
   useEffect(() => {
     if (window.innerWidth > 960) {
       VanillaTilt.init(document.getElementById("LoginContainer"), {
-        max: 8,
+        max: 25,
         speed: 400,
-        glare: true,
-        scale: 1,
-        transition: true,
-      });
-
-      VanillaTilt.init(document.getElementById("tilt2"), {
-        max: 10,
-        speed: 400,
-        scale: 1.1,
-        transition: true,
       });
     }
   }, []);
@@ -76,7 +71,7 @@ const Login = ({ setLoggedIn }) => {
     <>
       <Section>
         <LoginContainer id="LoginContainer">
-          <div id="tilt2">
+          <LoginForm>
             <h2>Este es el login</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
@@ -126,7 +121,7 @@ const Login = ({ setLoggedIn }) => {
             </p>
             {error && <p>{error.msg}</p>}
             <Link to="/">Home</Link>
-          </div>
+          </LoginForm>
         </LoginContainer>
       </Section>
     </>

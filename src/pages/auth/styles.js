@@ -32,13 +32,19 @@ export const LoginContainer = styled.div`
   padding: 100px 140px 100px 140px;
   animation: ${divReveal} 0.5s linear;
   height: auto;
-  transition: box-shadow 0.1s, transform 0.1s, border-radius 0.2s;
-  border-radius: 5px;
 
+  border-radius: 5px;
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  transition: transform 0.1s, border-radius 0.3s, padding 0.3s;
   :hover {
     border-radius: 50%;
     padding: 140px 180px 140px 180px;
   }
+`;
+
+export const LoginForm = styled.div`
+  transform: translateZ(20px);
 `;
 
 export const SignUpContainer = styled.div`

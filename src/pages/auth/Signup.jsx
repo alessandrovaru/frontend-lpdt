@@ -4,26 +4,16 @@ import { Link, useHistory } from "react-router-dom";
 
 import VanillaTilt from "vanilla-tilt";
 
-import { Section, SignUpContainer } from "./styles";
+import { Section, SignUpContainer, LoginForm } from "./styles";
 
 const Signup = ({ setLoggedIn }) => {
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
 
   if (window.innerWidth > 960) {
-    VanillaTilt.init(document.getElementById("tiltSign"), {
-      max: 8,
+    VanillaTilt.init(document.getElementById("SignUpContainer"), {
+      max: 25,
       speed: 400,
-      glare: true,
-      scale: 1,
-      transition: true,
-    });
-
-    VanillaTilt.init(document.getElementById("tilt2Sign"), {
-      max: 10,
-      speed: 400,
-      scale: 1.1,
-      transition: true,
     });
   }
 
@@ -73,8 +63,8 @@ const Signup = ({ setLoggedIn }) => {
   return (
     <>
       <Section>
-        <SignUpContainer id="tiltSign">
-          <div id="tilt2Sign">
+        <SignUpContainer id="SignUpContainer">
+          <LoginForm>
             <h2>Es es el signup</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
@@ -121,7 +111,7 @@ const Signup = ({ setLoggedIn }) => {
             </form>
             {error && <p>{error.msg}</p>}
             <Link to="/">Home</Link>
-          </div>
+          </LoginForm>
         </SignUpContainer>
       </Section>
     </>

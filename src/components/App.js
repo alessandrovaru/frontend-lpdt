@@ -13,7 +13,7 @@ import Layout from "./Layout/Layout";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
-  const [error, setError] = useState(null);
+  const [errorDelete, setError] = useState(null);
 
   // DELETE SESSION
   const deleteSession = (event) => {
@@ -44,9 +44,14 @@ const App = ({ history }) => {
         setLoggedIn(null);
       })
       .catch((err) => {
-        console.log("estoy aqui3");
-        setError({ msg: err });
-        console.log(error);
+        setError(JSON.parse(err));
+        if (errorDelete.message == `Couldn't find an active session.`) {
+          history.push("/");
+          localStorage.removeItem("token");
+          setLoggedIn(null);
+        }
+
+        console.log("estoy aqusi3");
       });
   };
   useEffect(() => {

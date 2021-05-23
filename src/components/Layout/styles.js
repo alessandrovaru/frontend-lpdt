@@ -7,8 +7,8 @@ export const Overlay = styled.div`
   background-image: url(${background});
   background-repeat: no-repeat;
   background-size: cover;
-  mix-blend-mode: color-dodge;
-  opacity: 0.5;
+  mix-blend-mode: overlay;
+  opacity: 1;
   position: fixed;
   right: 0;
   bottom: 0;
