@@ -18,6 +18,7 @@ import {
   SideSectionSecondCard,
 } from "./styles";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Dashboard = ({ deleteSession }) => {
   useEffect(() => {
@@ -60,23 +61,30 @@ const Dashboard = ({ deleteSession }) => {
           </Card1>
 
           <Card2 id="Card2">
-            <h2>Todos los cursos</h2>
-            <Ronaldo2
-              id="ronaldo"
-              src={ronaldo}
-              alt="La Pizarra del DT"
-              className="img-fluid"
-            />
+            <Link className="text-decoration-none text-reset" to="/cursos">
+              <h2>Todos los cursos</h2>
+              <Ronaldo2
+                id="ronaldo"
+                src={ronaldo}
+                alt="La Pizarra del DT"
+                className="img-fluid"
+              />
+            </Link>
           </Card2>
 
           <Card3 id="Card3">
-            <h2>Tododddlos cursos</h2>
-            <Ronaldo2
-              id="ronaldo"
-              src={ronaldo}
-              alt="La Pizarra del DT"
-              className="img-fluid"
-            />
+            <Link
+              className="text-decoration-none text-reset"
+              to="/capacitaciones"
+            >
+              <h2>Capactaciones</h2>
+              <Ronaldo2
+                id="ronaldo"
+                src={ronaldo}
+                alt="La Pizarra del DT"
+                className="img-fluid"
+              />
+            </Link>
           </Card3>
         </Wrapper>
       </MainSection>

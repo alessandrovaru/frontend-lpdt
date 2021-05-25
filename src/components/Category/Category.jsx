@@ -7,7 +7,7 @@ const DEFAULT_IMAGE =
 const Category = ({ cover = DEFAULT_IMAGE, path, emoji }) => {
   return (
     <div>
-      <p></p>
+      <p>Hola</p>
       <Anchor href={path} rel="noopener noreferrer">
         <Image src={cover} alt="foto" />
       </Anchor>

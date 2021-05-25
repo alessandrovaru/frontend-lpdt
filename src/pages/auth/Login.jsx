@@ -11,7 +11,7 @@ import {
 import VanillaTilt from "vanilla-tilt";
 import { useEffect } from "react";
 
-const Login = ({ setLoggedIn }) => {
+const Login = ({ setLoggedIn, setCounter }) => {
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
 
@@ -43,6 +43,7 @@ const Login = ({ setLoggedIn }) => {
       .then((response) => {
         if (response.ok) {
           setLoggedIn(true);
+          setCounter(60);
           localStorage.setItem("token", response.headers.get("Authorization"));
           return response.json();
         } else {

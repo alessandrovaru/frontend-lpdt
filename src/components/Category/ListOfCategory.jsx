@@ -1,16 +1,17 @@
 import React from "react";
 import Category from "./Category";
+import { CategoryContainer, CategoryCard } from "./styles";
 
 const ListOfCategory = () => {
   return (
     <div>
-      <ul>
+      <CategoryContainer>
         {[1, 2].map((category) => (
-          <li key={category}>
+          <CategoryCard key={category}>
             <Category />
-          </li>
+          </CategoryCard>
         ))}
-      </ul>
+      </CategoryContainer>
     </div>
   );
 };

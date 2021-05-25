@@ -18,3 +18,16 @@ export const Image = styled.img`
   height: 75px;
   width: 75px;
 `;
+
+export const CategoryContainer = styled.div`
+  background-color: red;
+  padding: 10px 10px 10px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
+export const CategoryCard = styled.div`
+  background-color: blue;
+  margin: 10px 10px 10px 0;
+`;

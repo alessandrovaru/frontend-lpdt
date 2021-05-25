@@ -22,9 +22,9 @@ export const OverlayColor = styled.div`
   background: rgb(2, 0, 36);
   background: linear-gradient(
     0deg,
-    rgba(2, 0, 36, 1) 0%,
+    rgb(182 232 255) 0%,
     rgba(0, 212, 255, 0.40379901960784315) 50%,
-    rgba(2, 0, 36, 1) 100%
+    rgb(89 191 230) 100%
   );
   background-size: cover;
   position: fixed;

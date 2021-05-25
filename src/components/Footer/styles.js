@@ -6,6 +6,6 @@ export const Foooter = styled.div`
   text-align: center;
   text-decoration: none;
   background-color: #020029;
-  height: 120px;
+  height: 30px;
   color: white;
 `;

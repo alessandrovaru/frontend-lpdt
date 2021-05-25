@@ -1,12 +1,24 @@
 import styled from "styled-components";
+import { keyframes } from "styled-components";
+const divReveal = keyframes`
+  from {
+    
+    opacity: 0
+  }
 
+  to {
+    
+    opacity:1;
+  }
+`;
 export const DashboardContainer = styled.section`
-  padding: 5vh 0 5vh 6vw;
+  padding: 5vh 0 5vh 20vw;
   min-height: 98vh;
   overflow: hidden;
   color: white;
   display: flex;
   flex-direction: row;
+  animation: ${divReveal} 0.8s linear;
 `;
 
 export const MainSection = styled.div`
@@ -68,6 +80,7 @@ export const Card2 = styled.div`
   display: flex;
   height: 400px;
   position: relative;
+  padding: 20px;
 `;
 
 export const Card3 = styled.div`
@@ -79,6 +92,7 @@ export const Card3 = styled.div`
   cursor: pointer;
   display: flex;
   height: 400px;
+  padding: 20px;
 `;
 
 export const Ronaldo2 = styled.img`

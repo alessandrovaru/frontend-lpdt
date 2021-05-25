@@ -13,7 +13,9 @@ import Layout from "./Layout/Layout";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
+
   const [errorDelete, setError] = useState(null);
+  const [counter, setCounter] = useState(60 * 120);
 
   // DELETE SESSION
   const deleteSession = (event) => {
@@ -45,7 +47,10 @@ const App = ({ history }) => {
       })
       .catch((err) => {
         setError(JSON.parse(err));
-        if (errorDelete.message == `Couldn't find an active session.`) {
+        if (
+          errorDelete.message === `Couldn't find an active session.` ||
+          null
+        ) {
           history.push("/");
           localStorage.removeItem("token");
           setLoggedIn(null);
@@ -58,16 +63,22 @@ const App = ({ history }) => {
     if (localStorage.getItem("token")) {
       setLoggedIn(true);
     }
-  }, []);
+    const timer =
+      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+    counter === 6000 && alert("llevas 1 hora y 40 minutos en la page");
+    console.log(counter);
+
+    return () => clearInterval(timer);
+  }, [counter]);
   return (
     <Router history={history}>
       <Switch>
-        <Layout deleteSession={deleteSession}>
+        <Layout loggedIn={loggedIn} deleteSession={deleteSession}>
           <Route exact path="/">
             <Home />
           </Route>
           <Route exact path="/login">
-            <Login setLoggedIn={setLoggedIn} />
+            <Login setLoggedIn={setLoggedIn} setCounter={setCounter} />
           </Route>
           <Route exact path="/signup">
             <Signup setLoggedIn={setLoggedIn} />

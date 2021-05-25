@@ -6,6 +6,8 @@ import CoursesList from "./CoursesList";
 import Category from "../../components/Category/Category";
 import ListOfCategory from "../../components/Category/ListOfCategory";
 
+import { CourseSection } from "./styles";
+
 const Courses = () => {
   const [cursos, setCurso] = useState([]);
   const [loading, setLoading] = useState(null);
@@ -45,18 +47,20 @@ const Courses = () => {
   }, []);
 
   return (
-    <div>
+    <CourseSection>
       <h1>Todos los cursos</h1>
       <ListOfCategory />
       <CoursesList cursos={cursos} />
-      <Link to="/">Home</Link>
+      <Link to="/dashboard">
+        <button className="btn btn-primary">Dashboard</button>
+      </Link>
       {error && (
         <p>
           No estás conectado a tu cuenta. <Link to="/login">Inicia sesion</Link>
         </p>
       )}
       {loading && <p>Cargando</p>}
-    </div>
+    </CourseSection>
   );
 };
 
