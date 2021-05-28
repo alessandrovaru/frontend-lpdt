@@ -1,65 +1,10 @@
-import React, { useState } from "react";
-
-import { Link, useHistory } from "react-router-dom";
-import {
-  Section,
-  LoginContainer,
-  LoginTiltContainer,
-  LoginForm,
-} from "./styles";
+import { Link } from "react-router-dom";
+import { Section, LoginContainer, LoginForm } from "./styles";
 
 import VanillaTilt from "vanilla-tilt";
 import { useEffect } from "react";
 
-const Login = ({ setLoggedIn, setCounter }) => {
-  const [form, setForm] = useState(null);
-  const [error, setError] = useState(null);
-
-  const history = useHistory();
-
-  const handleInputChange = (event) => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: form,
-      }),
-    };
-    console.log(form);
-    fetch("http://localhost:3000/login", requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          setLoggedIn(true);
-          setCounter(60);
-          localStorage.setItem("token", response.headers.get("Authorization"));
-          return response.json();
-        } else {
-          return response.text().then((text) => Promise.reject(text));
-        }
-      })
-      .then((data) => {
-        console.log(data);
-
-        history.push("/dashboard");
-      })
-      .catch((error) => {
-        setError({ msg: error });
-      });
-  };
-
+const Login = ({ login, fillForm, error }) => {
   useEffect(() => {
     if (window.innerWidth > 960) {
       VanillaTilt.init(document.getElementById("LoginContainer"), {
@@ -74,7 +19,7 @@ const Login = ({ setLoggedIn, setCounter }) => {
         <LoginContainer id="LoginContainer">
           <LoginForm>
             <h2>Este es el login</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={login}>
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Email address
@@ -85,7 +30,7 @@ const Login = ({ setLoggedIn, setCounter }) => {
                   id="email"
                   aria-describedby="emailHelp"
                   name="email"
-                  onChange={handleInputChange}
+                  onChange={fillForm}
                 />
                 <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
@@ -100,7 +45,7 @@ const Login = ({ setLoggedIn, setCounter }) => {
                   className="form-control"
                   id="password"
                   name="password"
-                  onChange={handleInputChange}
+                  onChange={fillForm}
                 />
               </div>
               <div className="mb-3 form-check">

@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import ronaldo from "../../img/players/ronaldo.png";
 import VanillaTilt from "vanilla-tilt";
 

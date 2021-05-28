@@ -1,64 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import VanillaTilt from "vanilla-tilt";
 
 import { Section, SignUpContainer, LoginForm } from "./styles";
 
-const Signup = ({ setLoggedIn }) => {
-  const [form, setForm] = useState(null);
-  const [error, setError] = useState(null);
-
-  if (window.innerWidth > 960) {
-    VanillaTilt.init(document.getElementById("SignUpContainer"), {
-      max: 25,
-      speed: 400,
-    });
-  }
-
-  const history = useHistory();
-
-  const handleInputChange = (event) => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: form,
-      }),
-    };
-    console.log(form);
-    fetch("http://localhost:3000/signup", requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          setLoggedIn(true);
-          localStorage.setItem("token", response.headers.get("Authorization"));
-          return response.json();
-        } else {
-          return response.text().then((text) => Promise.reject(text));
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        history.push("/dashboard");
-      })
-      .catch((error) => {
-        setError({ msg: error });
+const Signup = ({ signup, fillForm, error }) => {
+  useEffect(() => {
+    if (window.innerWidth > 960) {
+      VanillaTilt.init(document.getElementById("SignUpContainer"), {
+        max: 25,
+        speed: 400,
       });
-  };
+    }
+  }, []);
 
   return (
     <>
@@ -66,9 +22,9 @@ const Signup = ({ setLoggedIn }) => {
         <SignUpContainer id="SignUpContainer">
           <LoginForm>
             <h2>Es es el signup</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={signup}>
               <div className="mb-3">
-                <label for="exampleInputEmail1" className="form-label">
+                <label htmlFor="exampleInputEmail1" className="form-label">
                   Email address
                 </label>
                 <input
@@ -77,14 +33,14 @@ const Signup = ({ setLoggedIn }) => {
                   id="email"
                   aria-describedby="emailHelp"
                   name="email"
-                  onChange={handleInputChange}
+                  onChange={fillForm}
                 />
                 <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
                 </div>
               </div>
               <div className="mb-3">
-                <label for="exampleInputPassword1" className="form-label">
+                <label htmlFor="exampleInputPassword1" className="form-label">
                   Password
                 </label>
                 <input
@@ -92,7 +48,7 @@ const Signup = ({ setLoggedIn }) => {
                   className="form-control"
                   id="password"
                   name="password"
-                  onChange={handleInputChange}
+                  onChange={fillForm}
                 />
               </div>
               <div className="mb-3 form-check">
@@ -101,7 +57,7 @@ const Signup = ({ setLoggedIn }) => {
                   className="form-check-input"
                   id="exampleCheck1"
                 />
-                <label className="form-check-label" for="exampleCheck1">
+                <label className="form-check-label" htmlFor="exampleCheck1">
                   Check me out
                 </label>
               </div>

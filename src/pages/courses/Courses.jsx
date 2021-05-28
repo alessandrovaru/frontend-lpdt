@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import CoursesList from "./CoursesList";
-import Category from "../../components/Category/Category";
 import ListOfCategory from "../../components/Category/ListOfCategory";
 
 import { CourseSection } from "./styles";

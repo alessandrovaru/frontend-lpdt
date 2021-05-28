@@ -13,9 +13,114 @@ import Layout from "./Layout/Layout";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
-
-  const [errorDelete, setError] = useState(null);
+  const [form, setForm] = useState(null);
+  const [error, setError] = useState(null);
   const [counter, setCounter] = useState(60 * 120);
+
+  function checkSession() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+    fetch("http://localhost:3000/current_user", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        setLoggedIn(true);
+      })
+      .catch(function (error) {
+        const objError = JSON.parse(error);
+        setError(objError.error);
+        localStorage.removeItem("token");
+        setLoggedIn(null);
+      })
+      .finally(() => {});
+  }
+
+  // FILL FORM
+  const fillForm = (event) => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  // LOGIN
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: form,
+      }),
+    };
+    console.log(form);
+    fetch("http://localhost:3000/login", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          setLoggedIn(true);
+          localStorage.setItem("token", response.headers.get("Authorization"));
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        history.push("/dashboard");
+      })
+      .catch((error) => {
+        setError({ msg: error });
+      });
+  };
+
+  // SIGN UP
+  const signup = (event) => {
+    event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: form,
+      }),
+    };
+    console.log(form);
+    fetch("http://localhost:3000/signup", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          setLoggedIn(true);
+          localStorage.setItem("token", response.headers.get("Authorization"));
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        history.push("/dashboard");
+      })
+      .catch((error) => {
+        setError({ msg: error });
+      });
+  };
 
   // DELETE SESSION
   const deleteSession = (event) => {
@@ -47,10 +152,7 @@ const App = ({ history }) => {
       })
       .catch((err) => {
         setError(JSON.parse(err));
-        if (
-          errorDelete.message === `Couldn't find an active session.` ||
-          null
-        ) {
+        if (error.message === `Couldn't find an active session.` || null) {
           history.push("/");
           localStorage.removeItem("token");
           setLoggedIn(null);
@@ -59,29 +161,23 @@ const App = ({ history }) => {
         console.log("estoy aqusi3");
       });
   };
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setLoggedIn(true);
-    }
-    const timer =
-      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-    counter === 6000 && alert("llevas 1 hora y 40 minutos en la page");
-    console.log(counter);
 
-    return () => clearInterval(timer);
-  }, [counter]);
+  useEffect(() => {
+    checkSession();
+  });
+
   return (
     <Router history={history}>
       <Switch>
         <Layout loggedIn={loggedIn} deleteSession={deleteSession}>
           <Route exact path="/">
-            <Home />
+            <Home loggedIn={loggedIn} />
           </Route>
           <Route exact path="/login">
-            <Login setLoggedIn={setLoggedIn} setCounter={setCounter} />
+            <Login login={handleLogin} fillForm={fillForm} error={error} />
           </Route>
           <Route exact path="/signup">
-            <Signup setLoggedIn={setLoggedIn} />
+            <Signup signup={signup} error={error} fillForm={fillForm} />
           </Route>
           <Route exact path="/cursos">
             <Courses />
@@ -90,7 +186,6 @@ const App = ({ history }) => {
             <Dashboard deleteSession={deleteSession} />
           </Route>
         </Layout>
-
         <Route>
           <NotFound />
         </Route>
