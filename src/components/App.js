@@ -15,6 +15,9 @@ const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(null);
+
+  const [user, setUser] = useState({});
 
   // FILL FORM
   const fillForm = (event) => {
@@ -32,7 +35,7 @@ const App = ({ history }) => {
     let thirtyMinutes = 1000 * 60 * 30;
     let timeSinceLastLogin = now - localStorage.getItem("lastLoginTime");
     if (timeSinceLastLogin < thirtyMinutes) {
-      return localStorage.getItem("token");
+      setLoggedIn(true);
     } else {
       localStorage.removeItem("token");
       setLoggedIn(null);
@@ -64,7 +67,6 @@ const App = ({ history }) => {
         }
       })
       .then((data) => {
-        console.log(data);
         history.push("/dashboard");
       })
       .catch((error) => {
@@ -90,6 +92,7 @@ const App = ({ history }) => {
         if (response.ok) {
           setLoggedIn(true);
           localStorage.setItem("token", response.headers.get("Authorization"));
+          localStorage.setItem("lastLoginTime", new Date(Date.now()).getTime());
           return response.json();
         } else {
           return response.text().then((text) => Promise.reject(text));
@@ -147,8 +150,10 @@ const App = ({ history }) => {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getToken();
+      setLoggedIn(true);
+      history.push("/dashboard");
     }
-  });
+  }, [setLoggedIn, history]);
 
   return (
     <Router history={history}>
@@ -167,7 +172,14 @@ const App = ({ history }) => {
             <Courses />
           </Route>
           <Route exact path="/dashboard">
-            <Dashboard loggedIn={loggedIn} deleteSession={deleteSession} />
+            <Dashboard
+              user={user}
+              setUser={setUser}
+              setError={setError}
+              setLoading={setLoading}
+              loggedIn={loggedIn}
+              deleteSession={deleteSession}
+            />
           </Route>
         </Layout>
         <Route>

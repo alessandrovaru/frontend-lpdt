@@ -56,6 +56,7 @@ export const SignUpContainer = styled.div`
   height: auto;
   transition: box-shadow 0.1s, transform 0.1s, border-radius 0.2s;
   border-radius: 5px;
+  width: 800px;
 
   :hover {
     border-radius: 50%;

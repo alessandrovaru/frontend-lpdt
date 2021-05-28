@@ -23,8 +23,35 @@ const Signup = ({ signup, fillForm, error }) => {
           <LoginForm>
             <h2>Es es el signup</h2>
             <form onSubmit={signup}>
-              <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label">
+              <div className="row">
+                <div className="mb-3 col">
+                  <label htmlFor="name" className="form-label">
+                    Nombre
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    name="name"
+                    onChange={fillForm}
+                  />
+                </div>
+                <div className="mb-3 col">
+                  <label htmlFor="lastname" className="form-label">
+                    Apellido
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastname"
+                    name="lastname"
+                    onChange={fillForm}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3 ">
+                <label htmlFor="email" className="form-label">
                   Email address
                 </label>
                 <input
@@ -40,7 +67,46 @@ const Signup = ({ signup, fillForm, error }) => {
                 </div>
               </div>
               <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label">
+                <label htmlFor="username" className="form-label">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="username"
+                  name="username"
+                  onChange={fillForm}
+                />
+              </div>
+              <div className="row">
+                <div className="mb-3 col">
+                  <label htmlFor="country" className="form-label">
+                    País
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="country"
+                    name="country"
+                    onChange={fillForm}
+                  />
+                </div>
+                <div className="mb-3 col">
+                  <label htmlFor="phone" className="form-label">
+                    Número de teléfono
+                  </label>
+                  <input
+                    type="integer"
+                    className="form-control"
+                    id="phone"
+                    name="phone"
+                    onChange={fillForm}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
                 <input
@@ -51,16 +117,7 @@ const Signup = ({ signup, fillForm, error }) => {
                   onChange={fillForm}
                 />
               </div>
-              <div className="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label className="form-check-label" htmlFor="exampleCheck1">
-                  Check me out
-                </label>
-              </div>
+
               <button type="submit" className="btn btn-primary">
                 Submit
               </button>

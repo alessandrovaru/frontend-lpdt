@@ -19,12 +19,43 @@ import {
 import { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-const Dashboard = ({ loggedIn }) => {
+const Dashboard = ({ loggedIn, user, setUser, setLoading, setError }) => {
   const history = useHistory();
+
+  const getUser = () => {
+    setLoading(true);
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+    fetch("http://localhost:3000/current_user", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        setUser(data);
+        console.log(user);
+      })
+      .catch(function (error) {
+        setError({ msg: error });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   if (!loggedIn) {
     history.push("/");
   }
   useEffect(() => {
+    getUser();
     if (window.innerWidth > 960) {
       VanillaTilt.init(document.getElementById("Card1"), {
         max: 8,
@@ -50,8 +81,8 @@ const Dashboard = ({ loggedIn }) => {
   return (
     <DashboardContainer>
       <MainSection className="container">
-        <h2>Bienvenido al dashboard</h2>
-        <p>Hola</p>
+        <h2>Bienvenido al dashboard, {user.name}</h2>
+        <p>Hola ¿Qué tal todo por {user.country}?</p>
         <Wrapper className="wrapper">
           <Card1 id="Card1">
             <Card1H2>NUEVO CURSO</Card1H2>
