@@ -15,7 +15,6 @@ const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
-  const [counter, setCounter] = useState(60 * 120);
 
   // FILL FORM
   const fillForm = (event) => {
