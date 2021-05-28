@@ -17,36 +17,6 @@ const App = ({ history }) => {
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(60 * 120);
 
-  function checkSession() {
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-    fetch("http://localhost:3000/current_user", requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return response.text().then((text) => Promise.reject(text));
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        setLoggedIn(true);
-      })
-      .catch(function (error) {
-        const objError = JSON.parse(error);
-        setError(objError.error);
-        localStorage.removeItem("token");
-        setLoggedIn(null);
-      })
-      .finally(() => {});
-  }
-
   // FILL FORM
   const fillForm = (event) => {
     const target = event.target;
@@ -75,6 +45,7 @@ const App = ({ history }) => {
       .then((response) => {
         if (response.ok) {
           setLoggedIn(true);
+          setCounter(60);
           localStorage.setItem("token", response.headers.get("Authorization"));
           return response.json();
         } else {
@@ -163,15 +134,23 @@ const App = ({ history }) => {
   };
 
   useEffect(() => {
-    checkSession();
-  });
+    if (localStorage.getItem("token")) {
+      setLoggedIn(true);
+    }
+    const timer =
+      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+    counter === 6000 && alert("llevas 1 hora y 40 minutos en la page");
+    console.log(counter);
+
+    return () => clearInterval(timer);
+  }, [counter]);
 
   return (
     <Router history={history}>
       <Switch>
         <Layout loggedIn={loggedIn} deleteSession={deleteSession}>
           <Route exact path="/">
-            <Home loggedIn={loggedIn} />
+            <Home />
           </Route>
           <Route exact path="/login">
             <Login login={handleLogin} fillForm={fillForm} error={error} />
@@ -183,7 +162,7 @@ const App = ({ history }) => {
             <Courses />
           </Route>
           <Route exact path="/dashboard">
-            <Dashboard deleteSession={deleteSession} />
+            <Dashboard loggedIn={loggedIn} deleteSession={deleteSession} />
           </Route>
         </Layout>
         <Route>

@@ -17,9 +17,13 @@ import {
   SideSectionSecondCard,
 } from "./styles";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
-const Dashboard = ({ deleteSession }) => {
+const Dashboard = ({ loggedIn }) => {
+  const history = useHistory();
+  if (!loggedIn) {
+    history.push("/");
+  }
   useEffect(() => {
     if (window.innerWidth > 960) {
       VanillaTilt.init(document.getElementById("Card1"), {
