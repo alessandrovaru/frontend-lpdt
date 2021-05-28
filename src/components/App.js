@@ -27,6 +27,18 @@ const App = ({ history }) => {
       [name]: value,
     });
   };
+  //DELETING TOKEN DROM LOCAL STORAGE
+  const getToken = () => {
+    let now = new Date(Date.now()).getTime();
+    let thirtyMinutes = 1000 * 60 * 30;
+    let timeSinceLastLogin = now - localStorage.getItem("lastLoginTime");
+    if (timeSinceLastLogin < thirtyMinutes) {
+      return localStorage.getItem("token");
+    } else {
+      localStorage.removeItem("token");
+      setLoggedIn(null);
+    }
+  };
 
   // LOGIN
   const handleLogin = (event) => {
@@ -45,8 +57,8 @@ const App = ({ history }) => {
       .then((response) => {
         if (response.ok) {
           setLoggedIn(true);
-          setCounter(60);
           localStorage.setItem("token", response.headers.get("Authorization"));
+          localStorage.setItem("lastLoginTime", new Date(Date.now()).getTime());
           return response.json();
         } else {
           return response.text().then((text) => Promise.reject(text));
@@ -135,15 +147,9 @@ const App = ({ history }) => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      setLoggedIn(true);
+      getToken();
     }
-    const timer =
-      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-    counter === 6000 && alert("llevas 1 hora y 40 minutos en la page");
-    console.log(counter);
-
-    return () => clearInterval(timer);
-  }, [counter]);
+  });
 
   return (
     <Router history={history}>
