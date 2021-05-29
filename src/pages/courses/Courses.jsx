@@ -3,14 +3,19 @@ import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import CoursesList from "./CoursesList";
-import ListOfCategory from "../../components/Category/ListOfCategory";
+//COMPOENTES
+// import ListOfCategory from "../../components/Category/ListOfCategory";
+import NewCourseForm from "../../components/Form/NewCourseForm";
 
 import { CourseSection } from "./styles";
+import { Button } from "react-bootstrap";
 
-const Courses = () => {
+const Courses = ({ fillForm, form, setForm }) => {
   const [cursos, setCurso] = useState([]);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+
+  const [newCourse, setNewCourse] = useState(null);
 
   function getArticles() {
     setLoading(true);
@@ -41,6 +46,42 @@ const Courses = () => {
       });
   }
 
+  const createCourse = (event) => {
+    event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(form),
+    };
+    fetch("/api/v1/cursos/create", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        setForm([]);
+        getArticles();
+        console.log(data);
+      })
+      .catch((error) => {
+        setError({ msg: error });
+      });
+  };
+
+  const mountForm = () => {
+    setNewCourse(true);
+  };
+  const unMountForm = () => {
+    setNewCourse(false);
+  };
+
   useEffect(() => {
     getArticles();
   }, []);
@@ -48,7 +89,20 @@ const Courses = () => {
   return (
     <CourseSection>
       <h1>Todos los cursos</h1>
-      <ListOfCategory />
+      {newCourse ? (
+        <>
+          <NewCourseForm createCourse={createCourse} fillForm={fillForm} />{" "}
+          <Button onClick={unMountForm} className="btn btn-primary">
+            ¡Estoy listo!
+          </Button>
+        </>
+      ) : (
+        <Button onClick={mountForm} className="btn btn-primary">
+          New
+        </Button>
+      )}
+
+      {/* <ListOfCategory /> */}
       <CoursesList cursos={cursos} />
       <Link to="/dashboard">
         <button className="btn btn-primary">Dashboard</button>

@@ -22,11 +22,10 @@ const CoursesList = ({ cursos }) => {
       {cursos.map((c) => (
         <CourseCard key={c.id} id={c.id}>
           <h2>{c.name}</h2>
-          <p>
-            Lorem ipsum es el texto que se usa habitualmente en diseño gráfico
-            en demostraciones de tipografías o de borradores de diseño para
-            probar el diseño visual antes de insertar el texto final.
-          </p>
+          <h3>Description</h3>
+          <p>{c.description}</p>
+          <h4>Precio</h4>
+          <p>{c.description}</p>
         </CourseCard>
       ))}
     </CardContainer>

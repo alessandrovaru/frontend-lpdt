@@ -1,7 +1,8 @@
 import React from "react";
 import ronaldo from "../../img/players/ronaldo.png";
 import VanillaTilt from "vanilla-tilt";
-
+import { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
   DashboardContainer,
   Ronaldo,
@@ -16,46 +17,16 @@ import {
   SideSectionFirstCard,
   SideSectionSecondCard,
 } from "./styles";
-import { useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
 
-const Dashboard = ({ loggedIn, user, setUser, setLoading, setError }) => {
+const Dashboard = ({ loggedIn, user }) => {
   const history = useHistory();
 
-  const getUser = () => {
-    setLoading(true);
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-    fetch("http://localhost:3000/current_user", requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw response;
-      })
-      .then((data) => {
-        setUser(data);
-        console.log(user);
-      })
-      .catch(function (error) {
-        setError({ msg: error });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  if (!loggedIn) {
-    history.push("/");
-  }
   useEffect(() => {
-    getUser();
+    if (!loggedIn) {
+      history.push("/");
+    }
+  }, [loggedIn, history]);
+  useEffect(() => {
     if (window.innerWidth > 960) {
       VanillaTilt.init(document.getElementById("Card1"), {
         max: 8,

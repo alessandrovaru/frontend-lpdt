@@ -10,6 +10,7 @@ import Courses from "../pages/courses/Courses";
 import NotFound from "../pages/NotFound";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Layout from "./Layout/Layout";
+import NewCourse from "../pages/courses/NewCourse";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
@@ -41,7 +42,6 @@ const App = ({ history }) => {
       setLoggedIn(null);
     }
   };
-
   // LOGIN
   const handleLogin = (event) => {
     event.preventDefault();
@@ -67,13 +67,16 @@ const App = ({ history }) => {
         }
       })
       .then((data) => {
+        localStorage.setItem("user", JSON.stringify(data.data));
+        const usuario = localStorage.getItem("user");
+        setUser(JSON.parse(usuario));
+        setForm([]);
         history.push("/dashboard");
       })
       .catch((error) => {
         setError({ msg: error });
       });
   };
-
   // SIGN UP
   const signup = (event) => {
     event.preventDefault();
@@ -99,14 +102,16 @@ const App = ({ history }) => {
         }
       })
       .then((data) => {
-        console.log(data);
+        localStorage.setItem("user", JSON.stringify(data.data));
+        const usuario = localStorage.getItem("user");
+        setUser(JSON.parse(usuario));
+        setForm([]);
         history.push("/dashboard");
       })
       .catch((error) => {
         setError({ msg: error });
       });
   };
-
   // DELETE SESSION
   const deleteSession = (event) => {
     event.preventDefault();
@@ -133,6 +138,8 @@ const App = ({ history }) => {
 
         history.push("/");
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setUser([]);
         setLoggedIn(null);
       })
       .catch((err) => {
@@ -151,9 +158,16 @@ const App = ({ history }) => {
     if (localStorage.getItem("token")) {
       getToken();
       setLoggedIn(true);
-      history.push("/dashboard");
     }
-  }, [setLoggedIn, history]);
+  }, [history]);
+
+  useEffect(() => {
+    const loggedUserJson = localStorage.getItem("user");
+    if (loggedUserJson) {
+      const usuario = JSON.parse(loggedUserJson);
+      setUser(usuario);
+    }
+  }, []);
 
   return (
     <Router history={history}>
@@ -163,13 +177,26 @@ const App = ({ history }) => {
             <Home />
           </Route>
           <Route exact path="/login">
-            <Login login={handleLogin} fillForm={fillForm} error={error} />
+            <Login
+              login={handleLogin}
+              fillForm={fillForm}
+              error={error}
+              loading={loading}
+            />
           </Route>
           <Route exact path="/signup">
-            <Signup signup={signup} error={error} fillForm={fillForm} />
+            <Signup
+              signup={signup}
+              error={error}
+              fillForm={fillForm}
+              loading={loading}
+            />
           </Route>
           <Route exact path="/cursos">
-            <Courses />
+            <Courses setForm={setForm} form={form} fillForm={fillForm} />
+          </Route>
+          <Route exact path="/cursos/new">
+            <NewCourse fillForm={fillForm} />
           </Route>
           <Route exact path="/dashboard">
             <Dashboard
