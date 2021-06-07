@@ -197,7 +197,7 @@ const App = ({ history }) => {
             <Courses setForm={setForm} form={form} fillForm={fillForm} />
           </Route>
           <Route exact path="/cursos/:id">
-            <ShowCourse />
+            <ShowCourse history={history} />
           </Route>
           <Route exact path="/cursos/new">
             <NewCourse fillForm={fillForm} />

@@ -2,11 +2,41 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CourseSection } from "./styles";
 
-const ShowCourse = () => {
+const ShowCourse = ({ history }) => {
   const [cursos, setCurso] = useState([]);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+  // POST COURSES (DELETE)
+  const deleteCourse = (id, e) => {
+    e.preventDefault();
 
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+    fetch(`/api/v1/destroy/${id}`, requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        setError({ msg: error });
+        console.log(error);
+      })
+      .finally(() => {
+        history.push("/cursos");
+      });
+  };
   useEffect(() => {
     const path = window.location.pathname;
     const cursoID = path.slice(8);
@@ -41,6 +71,7 @@ const ShowCourse = () => {
       <h2>{cursos.id}</h2>
       <h3>{cursos.name}</h3>
       <p>{cursos.description}</p>
+      <button onClick={(e) => deleteCourse(cursos.id, e)}>borrar</button>
       <Link to="/dashboard">
         <button className="btn btn-primary">Dashboard</button>
       </Link>

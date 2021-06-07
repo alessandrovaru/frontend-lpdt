@@ -24,7 +24,7 @@ const CoursesList = ({ cursos, deleteCourse }) => {
   return (
     <CardContainer>
       {cursos.map((c) => (
-        <Link to={`cursos/${c.id}`}>
+        <Link className="text-decoration-none text-muted" to={`cursos/${c.id}`}>
           <CourseCard key={c.id} id={c.id}>
             <h2>{c.name}</h2>
             <h3>Description</h3>
