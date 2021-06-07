@@ -6,10 +6,10 @@ const ShowCourse = () => {
   const [cursos, setCurso] = useState([]);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
-  const path = window.location.pathname;
-  const cursoID = path.slice(8);
 
-  const getCurso = () => {
+  useEffect(() => {
+    const path = window.location.pathname;
+    const cursoID = path.slice(8);
     setLoading(true);
     const requestOptions = {
       method: "GET",
@@ -28,7 +28,6 @@ const ShowCourse = () => {
       })
       .then((data) => {
         setCurso(data);
-        console.log(cursos);
       })
       .catch(function (error) {
         setError({ msg: error });
@@ -36,10 +35,6 @@ const ShowCourse = () => {
       .finally(() => {
         setLoading(false);
       });
-  };
-
-  useEffect(() => {
-    getCurso();
   }, []);
   return (
     <CourseSection>
