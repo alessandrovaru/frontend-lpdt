@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import CoursesList from "./CoursesList";
-//COMPOENTES
-// import ListOfCategory from "../../components/Category/ListOfCategory";
+//COMPONENTES
 import NewCourseForm from "../../components/Form/NewCourseForm";
+// import ListOfCategory from "../../components/Category/ListOfCategory";
 
 import { CourseSection } from "./styles";
 import { Button } from "react-bootstrap";
@@ -17,6 +17,7 @@ const Courses = ({ fillForm, form, setForm }) => {
 
   const [newCourse, setNewCourse] = useState(null);
 
+  // GET COURSES
   function getArticles() {
     setLoading(true);
     const requestOptions = {
@@ -45,7 +46,7 @@ const Courses = ({ fillForm, form, setForm }) => {
         setLoading(false);
       });
   }
-
+  // POST COURSES (CREATE)
   const createCourse = (event) => {
     event.preventDefault();
     const requestOptions = {
@@ -74,14 +75,44 @@ const Courses = ({ fillForm, form, setForm }) => {
         setError({ msg: error });
       });
   };
-
+  // POST COURSES (DELETE)
+  const deleteCourse = (id, e) => {
+    e.preventDefault();
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+    fetch(`/api/v1/destroy/${id}`, requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        setError({ msg: error });
+        console.log(error);
+      })
+      .finally(() => {
+        getArticles();
+      });
+  };
+  // CAMBIOS DE ESTADO PARA EL POST
   const mountForm = () => {
     setNewCourse(true);
   };
   const unMountForm = () => {
     setNewCourse(false);
   };
-
+  // PRIMER EFECTO
   useEffect(() => {
     getArticles();
   }, []);
@@ -91,7 +122,7 @@ const Courses = ({ fillForm, form, setForm }) => {
       <h1>Todos los cursos</h1>
       {newCourse ? (
         <>
-          <NewCourseForm createCourse={createCourse} fillForm={fillForm} />{" "}
+          <NewCourseForm createCourse={createCourse} fillForm={fillForm} />
           <Button onClick={unMountForm} className="btn btn-primary">
             ¡Estoy listo!
           </Button>
@@ -101,9 +132,8 @@ const Courses = ({ fillForm, form, setForm }) => {
           New
         </Button>
       )}
-
       {/* <ListOfCategory /> */}
-      <CoursesList cursos={cursos} />
+      <CoursesList cursos={cursos} deleteCourse={deleteCourse} />
       <Link to="/dashboard">
         <button className="btn btn-primary">Dashboard</button>
       </Link>

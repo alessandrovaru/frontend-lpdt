@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { CourseCard, CardContainer } from "./styles";
 import VanillaTilt from "vanilla-tilt";
 
-const CoursesList = ({ cursos }) => {
+const CoursesList = ({ cursos, deleteCourse }) => {
+  // EFECTO DE CARTAS
   const ciclo = cursos.map((c) => {
     return VanillaTilt.init(document.getElementById(c.id), {
       max: 8,
@@ -12,11 +13,13 @@ const CoursesList = ({ cursos }) => {
       glare: true,
     });
   });
+  // PRIMER EFECTO PARA LAS CARTAS
   useEffect(() => {
     if (window.innerWidth > 960) {
       return ciclo;
     }
   }, [ciclo]);
+
   return (
     <CardContainer>
       {cursos.map((c) => (
@@ -26,6 +29,12 @@ const CoursesList = ({ cursos }) => {
           <p>{c.description}</p>
           <h4>Precio</h4>
           <p>{c.description}</p>
+          <button
+            onClick={(e) => deleteCourse(c.id, e)}
+            className="btn btn-danger"
+          >
+            Borrar
+          </button>
         </CourseCard>
       ))}
     </CardContainer>
