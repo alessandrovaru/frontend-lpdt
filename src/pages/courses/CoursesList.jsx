@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import { CourseCard, CardContainer } from "./styles";
 import VanillaTilt from "vanilla-tilt";
+import { Link } from "react-router-dom";
 
 const CoursesList = ({ cursos, deleteCourse }) => {
   // EFECTO DE CARTAS
@@ -23,19 +24,21 @@ const CoursesList = ({ cursos, deleteCourse }) => {
   return (
     <CardContainer>
       {cursos.map((c) => (
-        <CourseCard key={c.id} id={c.id}>
-          <h2>{c.name}</h2>
-          <h3>Description</h3>
-          <p>{c.description}</p>
-          <h4>Precio</h4>
-          <p>{c.description}</p>
-          <button
-            onClick={(e) => deleteCourse(c.id, e)}
-            className="btn btn-danger"
-          >
-            Borrar
-          </button>
-        </CourseCard>
+        <Link to={`cursos/${c.id}`}>
+          <CourseCard key={c.id} id={c.id}>
+            <h2>{c.name}</h2>
+            <h3>Description</h3>
+            <p>{c.description}</p>
+            <h4>Precio</h4>
+            <p>{c.description}</p>
+            <button
+              onClick={(e) => deleteCourse(c.id, e)}
+              className="btn btn-danger"
+            >
+              Borrar
+            </button>
+          </CourseCard>
+        </Link>
       ))}
     </CardContainer>
   );

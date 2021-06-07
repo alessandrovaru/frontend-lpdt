@@ -46,6 +46,7 @@ const Courses = ({ fillForm, form, setForm }) => {
         setLoading(false);
       });
   }
+
   // POST COURSES (CREATE)
   const createCourse = (event) => {
     event.preventDefault();

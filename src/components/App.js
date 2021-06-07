@@ -11,6 +11,7 @@ import NotFound from "../pages/NotFound";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Layout from "./Layout/Layout";
 import NewCourse from "../pages/courses/NewCourse";
+import ShowCourse from "../pages/courses/ShowCourse";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
@@ -194,6 +195,9 @@ const App = ({ history }) => {
           </Route>
           <Route exact path="/cursos">
             <Courses setForm={setForm} form={form} fillForm={fillForm} />
+          </Route>
+          <Route exact path="/cursos/:id">
+            <ShowCourse />
           </Route>
           <Route exact path="/cursos/new">
             <NewCourse fillForm={fillForm} />
