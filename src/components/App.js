@@ -12,6 +12,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Layout from "./Layout/Layout";
 import NewCourse from "../pages/courses/NewCourse";
 import ShowCourse from "../pages/courses/ShowCourse";
+import Professors from "../pages/professors/professors";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState(null);
@@ -211,6 +212,9 @@ const App = ({ history }) => {
               loggedIn={loggedIn}
               deleteSession={deleteSession}
             />
+          </Route>
+          <Route exact path="/profesores">
+            <Professors />
           </Route>
         </Layout>
         <Route>
