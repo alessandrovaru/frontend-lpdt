@@ -34,3 +34,15 @@ export const OverlayColor = styled.div`
   min-height: 100%;
   z-index: -2;
 `;
+
+export const Background = styled.div`
+  min-width: 100vw;
+  background: #f7f7f7;
+  background-attachment: fixed;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100vh;
+  z-index: -3;
+`;

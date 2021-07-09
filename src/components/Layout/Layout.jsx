@@ -2,15 +2,27 @@ import BackgroundVideo from "../BackgroundVideo/BackgroundVideo";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import SideNav from "../SideNav/SideNav";
-import { Overlay, OverlayColor } from "./styles";
+import { Overlay, OverlayColor, Background } from "./styles";
 
 const Layout = ({ children, deleteSession, loggedIn }) => {
   return (
     <>
-      {loggedIn ? <SideNav deleteSession={deleteSession} /> : <Header />}
+      {loggedIn === "LOGGED_IN" ? (
+        <SideNav deleteSession={deleteSession} />
+      ) : (
+        <Header />
+      )}
       <Overlay />
-      <OverlayColor />
-      <BackgroundVideo />
+
+      {loggedIn === "LOGGED_IN" ? <></> : <OverlayColor />}
+
+      {loggedIn === "LOGGED_IN" ? (
+        <Background>
+          <p>sjshhshs</p>
+        </Background>
+      ) : (
+        <BackgroundVideo />
+      )}
       {children}
       <Footer />
     </>

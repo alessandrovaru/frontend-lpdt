@@ -43,6 +43,18 @@ const NewCourseForm = ({ fillForm, createCourse }) => {
             onChange={fillForm}
           />
         </div>
+        <div className="mb-3 col">
+          <label htmlFor="price" className="form-label">
+            profe id
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="professor_id"
+            name="professor_id"
+            onChange={fillForm}
+          />
+        </div>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { keyframes } from "styled-components";
 const divReveal = keyframes`
   from {
-    
     opacity: 0
   }
 
@@ -15,7 +14,6 @@ export const DashboardContainer = styled.section`
   padding: 5vh 0 5vh 20vw;
   min-height: 98vh;
   overflow: hidden;
-  color: white;
   display: flex;
   flex-direction: row;
   animation: ${divReveal} 0.8s linear;

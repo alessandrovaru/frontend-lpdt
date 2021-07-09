@@ -1,7 +1,7 @@
 import React from "react";
 import { SideNavContainer, UnorderedList, ListItems } from "./styles";
 import isoLogoNegro from "../../img/logos/isonegro.png";
-
+import { Link } from "react-router-dom";
 const SideNav = ({ deleteSession }) => {
   return (
     <SideNavContainer>
@@ -14,9 +14,10 @@ const SideNav = ({ deleteSession }) => {
       />
       <div>
         <UnorderedList>
-          <ListItems>Dashboard</ListItems>
+          <Link to='/dashboard'><ListItems>Dashboard</ListItems></Link>
+          <Link to='/profesores'><ListItems>Profesores</ListItems></Link>
+          <Link to='/cursos'><ListItems>Cursos</ListItems></Link>
           <ListItems>Mi perfil</ListItems>
-          <ListItems>Mis cursos</ListItems>
           <ListItems>Ayuda</ListItems>
           <ListItems>Configuración</ListItems>
         </UnorderedList>

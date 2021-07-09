@@ -2,9 +2,15 @@ import React, { useEffect } from "react";
 
 import { CourseCard, CardContainer } from "./styles";
 import VanillaTilt from "vanilla-tilt";
-import { Link } from "react-router-dom";
 
-const CoursesList = ({ cursos, deleteCourse }) => {
+const CoursesList = ({
+  cursos,
+  deleteCourse,
+  editCourse,
+  editable,
+  updateCourse,
+  fillForm,
+}) => {
   // EFECTO DE CARTAS
   const ciclo = cursos.map((c) => {
     return VanillaTilt.init(document.getElementById(c.id), {
@@ -14,6 +20,7 @@ const CoursesList = ({ cursos, deleteCourse }) => {
       glare: true,
     });
   });
+  //EDIT
   // PRIMER EFECTO PARA LAS CARTAS
   useEffect(() => {
     if (window.innerWidth > 960) {
@@ -24,21 +31,47 @@ const CoursesList = ({ cursos, deleteCourse }) => {
   return (
     <CardContainer>
       {cursos.map((c) => (
-        <Link className="text-decoration-none text-muted" to={`cursos/${c.id}`}>
+        <div key={c.id} className="text-decoration-none text-muted">
           <CourseCard key={c.id} id={c.id}>
-            <h2>{c.name}</h2>
-            <h3>Description</h3>
-            <p>{c.description}</p>
-            <h4>Precio</h4>
-            <p>{c.description}</p>
+            {editable ? (
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                name="name"
+                defaultValue={c.name}
+                onChange={fillForm}
+              />
+            ) : (
+              <h3>{c.name}</h3>
+            )}
+            {editable ? (
+              <input
+                type="text"
+                className="form-control"
+                id="description"
+                name="description"
+                defaultValue={c.description}
+                onChange={fillForm}
+              />
+            ) : (
+              <h4>{c.description}</h4>
+            )}
             <button
               onClick={(e) => deleteCourse(c.id, e)}
               className="btn btn-danger"
             >
               Borrar
             </button>
+            <button
+              type="submit"
+              onClick={!editable ? editCourse : (e) => updateCourse(c.id, e)}
+              className="btn btn-warning"
+            >
+              {editable ? "Submit" : "Edit"}
+            </button>
           </CourseCard>
-        </Link>
+        </div>
       ))}
     </CardContainer>
   );

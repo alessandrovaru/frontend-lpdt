@@ -2,7 +2,7 @@ import React from "react";
 import ronaldo from "../../img/players/ronaldo.png";
 import VanillaTilt from "vanilla-tilt";
 import { useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   DashboardContainer,
   Ronaldo,
@@ -18,14 +18,43 @@ import {
   SideSectionSecondCard,
 } from "./styles";
 
-const Dashboard = ({ loggedIn, user }) => {
-  const history = useHistory();
-
+const Dashboard = ({
+  setError,
+  user,
+  setUser,
+  setLoggedIn,
+  loggedIn,
+  history,
+}) => {
   useEffect(() => {
-    if (!loggedIn) {
-      history.push("/");
-    }
-  }, [loggedIn, history]);
+    fetch("http://localhost:3000/current_user", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === "401") {
+          throw new Error("Unauthorized Request. Must be signed in.");
+        }
+      })
+      .then((data) => {
+        if (data && loggedIn === "NOT_LOGGED") {
+          setLoggedIn("LOGGED_IN");
+          setUser(data);
+        } else if (!data && loggedIn === "LOGGED_IN") {
+          setLoggedIn("NOT_LOGGED");
+        } else if (loggedIn === "NOT_LOGGED") {
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }, [setError, setLoggedIn, setUser, loggedIn, history]);
+
   useEffect(() => {
     if (window.innerWidth > 960) {
       VanillaTilt.init(document.getElementById("Card1"), {
@@ -82,7 +111,7 @@ const Dashboard = ({ loggedIn, user }) => {
               className="text-decoration-none text-reset"
               to="/capacitaciones"
             >
-              <h2>Capactaciones</h2>
+              <h2>Capacitaciones</h2>
               <Ronaldo2
                 id="ronaldo"
                 src={ronaldo}

@@ -15,11 +15,10 @@ import ShowCourse from "../pages/courses/ShowCourse";
 import Professors from "../pages/professors/professors";
 
 const App = ({ history }) => {
-  const [loggedIn, setLoggedIn] = useState(null);
+  const [loggedIn, setLoggedIn] = useState("NOT_LOGGED");
   const [form, setForm] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
-
   const [user, setUser] = useState({});
 
   // FILL FORM
@@ -32,18 +31,7 @@ const App = ({ history }) => {
       [name]: value,
     });
   };
-  //DELETING TOKEN DROM LOCAL STORAGE
-  const getToken = () => {
-    let now = new Date(Date.now()).getTime();
-    let thirtyMinutes = 1000 * 60 * 30;
-    let timeSinceLastLogin = now - localStorage.getItem("lastLoginTime");
-    if (timeSinceLastLogin < thirtyMinutes) {
-      setLoggedIn(true);
-    } else {
-      localStorage.removeItem("token");
-      setLoggedIn(null);
-    }
-  };
+
   // LOGIN
   const handleLogin = (event) => {
     event.preventDefault();
@@ -56,11 +44,9 @@ const App = ({ history }) => {
         user: form,
       }),
     };
-    console.log(form);
     fetch("http://localhost:3000/login", requestOptions)
       .then((response) => {
         if (response.ok) {
-          setLoggedIn(true);
           localStorage.setItem("token", response.headers.get("Authorization"));
           localStorage.setItem("lastLoginTime", new Date(Date.now()).getTime());
           return response.json();
@@ -70,9 +56,10 @@ const App = ({ history }) => {
       })
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data.data));
-        const usuario = localStorage.getItem("user");
-        setUser(JSON.parse(usuario));
+        setUser(data.data);
+        setLoggedIn("LOGGED_IN");
         setForm([]);
+
         history.push("/dashboard");
       })
       .catch((error) => {
@@ -105,8 +92,8 @@ const App = ({ history }) => {
       })
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data.data));
-        const usuario = localStorage.getItem("user");
-        setUser(JSON.parse(usuario));
+        setUser(data.data);
+        setLoggedIn("LOGGED_IN");
         setForm([]);
         history.push("/dashboard");
       })
@@ -130,14 +117,10 @@ const App = ({ history }) => {
           console.log("Logged out");
           return response.json();
         } else {
-          console.log("estoy aqui");
           return response.text().then((text) => Promise.reject(text));
         }
       })
       .then((data) => {
-        console.log("estoy aqui2");
-        console.log(data);
-
         history.push("/");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -151,25 +134,37 @@ const App = ({ history }) => {
           localStorage.removeItem("token");
           setLoggedIn(null);
         }
-
-        console.log("estoy aqusi3");
       });
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getToken();
-      setLoggedIn(true);
-    }
-  }, [history]);
-
-  useEffect(() => {
-    const loggedUserJson = localStorage.getItem("user");
-    if (loggedUserJson) {
-      const usuario = JSON.parse(loggedUserJson);
-      setUser(usuario);
-    }
-  }, []);
+    fetch("http://localhost:3000/current_user", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === "401") {
+          throw new Error("Unauthorized Request. Must be signed in.");
+        }
+      })
+      .then((data) => {
+        if (data && loggedIn === "NOT_LOGGED") {
+          setLoggedIn("LOGGED_IN");
+          setUser(data);
+        } else if (!data && loggedIn === "LOGGED_IN") {
+          setLoggedIn("NOT_LOGGED");
+        } else if (loggedIn === "NOT_LOGGED") {
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }, [loggedIn, history]);
 
   return (
     <Router history={history}>
@@ -207,14 +202,15 @@ const App = ({ history }) => {
             <Dashboard
               user={user}
               setUser={setUser}
+              setLoggedIn={setLoggedIn}
+              loggedIn={loggedIn}
+              history={history}
               setError={setError}
               setLoading={setLoading}
-              loggedIn={loggedIn}
-              deleteSession={deleteSession}
             />
           </Route>
           <Route exact path="/profesores">
-            <Professors />
+            <Professors setForm={setForm} form={form} fillForm={fillForm} />
           </Route>
         </Layout>
         <Route>

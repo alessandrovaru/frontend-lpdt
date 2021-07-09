@@ -14,8 +14,8 @@ const Courses = ({ fillForm, form, setForm }) => {
   const [cursos, setCurso] = useState([]);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
-
   const [newCourse, setNewCourse] = useState(null);
+  const [editable, setEditable] = useState(null);
 
   // GET COURSES
   function getArticles() {
@@ -28,7 +28,7 @@ const Courses = ({ fillForm, form, setForm }) => {
         Authorization: localStorage.getItem("token"),
       },
     };
-    fetch("/api/v1/cursos/index", requestOptions)
+    fetch("/api/v1/cursos/", requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -50,6 +50,7 @@ const Courses = ({ fillForm, form, setForm }) => {
   // POST COURSES (CREATE)
   const createCourse = (event) => {
     event.preventDefault();
+    console.log(form);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -58,7 +59,7 @@ const Courses = ({ fillForm, form, setForm }) => {
       },
       body: JSON.stringify(form),
     };
-    fetch("/api/v1/cursos/create", requestOptions)
+    fetch("/api/v1/cursos/", requestOptions)
       .then((response) => {
         if (response.ok) {
           console.log(response);
@@ -76,6 +77,35 @@ const Courses = ({ fillForm, form, setForm }) => {
         setError({ msg: error });
       });
   };
+  // EDIT COURSES (PUT)
+  const updateCourse = (id, e) => {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(form),
+    };
+    fetch(`/api/v1/cursos/${id}`, requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          return response.json();
+        } else {
+          return response.text().then((text) => Promise.reject(text));
+        }
+      })
+      .then((data) => {
+        setForm([]);
+        getArticles();
+        setEditable(null);
+        console.log(data);
+      })
+      .catch((error) => {
+        setError({ msg: error });
+      });
+  };
   // POST COURSES (DELETE)
   const deleteCourse = (id, e) => {
     e.preventDefault();
@@ -86,7 +116,7 @@ const Courses = ({ fillForm, form, setForm }) => {
         Authorization: localStorage.getItem("token"),
       },
     };
-    fetch(`/api/v1/destroy/${id}`, requestOptions)
+    fetch(`/api/v1/cursos/${id}`, requestOptions)
       .then((response) => {
         if (response.ok) {
           console.log(response);
@@ -106,6 +136,12 @@ const Courses = ({ fillForm, form, setForm }) => {
         getArticles();
       });
   };
+
+  //EDITCOURSE
+  const editCourse = () => {
+    setEditable({ editable: true });
+  };
+
   // CAMBIOS DE ESTADO PARA EL POST
   const mountForm = () => {
     setNewCourse(true);
@@ -134,7 +170,14 @@ const Courses = ({ fillForm, form, setForm }) => {
         </Button>
       )}
       {/* <ListOfCategory /> */}
-      <CoursesList cursos={cursos} deleteCourse={deleteCourse} />
+      <CoursesList
+        cursos={cursos}
+        deleteCourse={deleteCourse}
+        editable={editable}
+        updateCourse={updateCourse}
+        editCourse={editCourse}
+        fillForm={fillForm}
+      />
       <Link to="/dashboard">
         <button className="btn btn-primary">Dashboard</button>
       </Link>
