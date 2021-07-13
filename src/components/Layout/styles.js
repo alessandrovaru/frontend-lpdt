@@ -37,7 +37,7 @@ export const OverlayColor = styled.div`
 
 export const Background = styled.div`
   min-width: 100vw;
-  background: #f7f7f7;
+  background-color: #f9fafb;
   background-attachment: fixed;
   position: fixed;
   right: 0;

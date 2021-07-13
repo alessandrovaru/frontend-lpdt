@@ -12,7 +12,7 @@ const Layout = ({ children, deleteSession, loggedIn }) => {
       ) : (
         <Header />
       )}
-      <Overlay />
+      {loggedIn === "LOGGED_IN" ? <></> : <Overlay />}
 
       {loggedIn === "LOGGED_IN" ? <></> : <OverlayColor />}
 

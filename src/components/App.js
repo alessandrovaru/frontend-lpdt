@@ -13,6 +13,7 @@ import Layout from "./Layout/Layout";
 import NewCourse from "../pages/courses/NewCourse";
 import ShowCourse from "../pages/courses/ShowCourse";
 import Professors from "../pages/professors/professors";
+import AdvisoryDashboard from "../pages/advisory/AdvisoryDashboard";
 
 const App = ({ history }) => {
   const [loggedIn, setLoggedIn] = useState("NOT_LOGGED");
@@ -211,6 +212,9 @@ const App = ({ history }) => {
           </Route>
           <Route exact path="/profesores">
             <Professors setForm={setForm} form={form} fillForm={fillForm} />
+          </Route>
+          <Route exact path="/asesorias">
+            <AdvisoryDashboard />
           </Route>
         </Layout>
         <Route>

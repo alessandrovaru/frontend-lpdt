@@ -1,5 +1,6 @@
 import React from "react";
 import ronaldo from "../../img/players/ronaldo.png";
+import overlay6 from "../../img/backgrounds/overlay6.jpg";
 import VanillaTilt from "vanilla-tilt";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -16,6 +17,8 @@ import {
   SideSection,
   SideSectionFirstCard,
   SideSectionSecondCard,
+  Texture,
+  TextureContainer,
 } from "./styles";
 
 const Dashboard = ({
@@ -69,65 +72,87 @@ const Dashboard = ({
         transition: true,
         glare: true,
       });
-      VanillaTilt.init(document.getElementById("Card3"), {
-        max: 8,
-        speed: 400,
-        transition: true,
-        glare: true,
-      });
     }
   }, []);
 
   return (
     <DashboardContainer>
-      <MainSection className="container">
-        <h2>Bienvenido al dashboard, {user.name}</h2>
-        <p>Hola ¿Qué tal todo por {user.country}?</p>
-        <Wrapper className="wrapper">
-          <Card1 id="Card1">
-            <Card1H2>NUEVO CURSO</Card1H2>
-            <Ronaldo
-              id="ronaldo"
-              src={ronaldo}
-              alt="La Pizarra del DT"
-              className=" img-fluid"
-            />
-          </Card1>
-
-          <Card2 id="Card2">
-            <Link className="text-decoration-none text-reset" to="/cursos">
-              <h2>Todos los cursos</h2>
-              <Ronaldo2
+      <nav className="navbar navbar-expand-lg  bg-transparent navbar-light">
+        <div className="container-fluid">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ">
+              <li className="nav-item">
+                <Link className="nav-link" to="/dashboard">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Cursos
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Capacitaciones
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/asesorias">
+                  Asesorías
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div className="container-fluid">
+        <h3>Bienvenido al dashboard, {user.name}</h3>
+        <MainSection>
+          <Wrapper className="wrapper">
+            <Card1 id="Card1">
+              <TextureContainer>
+                <Texture alt="Fondo" src={overlay6}></Texture>
+              </TextureContainer>
+              <Card1H2>NUEVO CURSO</Card1H2>
+              <Ronaldo
                 id="ronaldo"
                 src={ronaldo}
                 alt="La Pizarra del DT"
-                className="img-fluid"
+                className=" img-fluid"
               />
-            </Link>
-          </Card2>
-
-          <Card3 id="Card3">
-            <Link
-              className="text-decoration-none text-reset"
-              to="/capacitaciones"
-            >
-              <h2>Capacitaciones</h2>
-              <Ronaldo2
+            </Card1>
+            <Card2 id="Card2">
+              <TextureContainer>
+                <Texture alt="Fondo" src={overlay6}></Texture>
+              </TextureContainer>
+              <Card1H2>NUEVO CURSO</Card1H2>
+              <Ronaldo
                 id="ronaldo"
                 src={ronaldo}
                 alt="La Pizarra del DT"
-                className="img-fluid"
+                className=" img-fluid"
               />
-            </Link>
-          </Card3>
-        </Wrapper>
-      </MainSection>
-      <SideSection className="container">
-        <h2>Bienvenido al dashboard</h2>
-        <p>Hola</p>
-        <SideSectionFirstCard>1</SideSectionFirstCard>
-        <SideSectionSecondCard>1</SideSectionSecondCard>
-      </SideSection>
+            </Card2>
+          </Wrapper>
+          <SideSection className="container">
+            <h2>Bienvenido al dashboard</h2>
+            <p>Hola</p>
+            <SideSectionFirstCard>1</SideSectionFirstCard>
+            <SideSectionSecondCard>1</SideSectionSecondCard>
+          </SideSection>
+        </MainSection>
+      </div>
     </DashboardContainer>
   );
 };
